@@ -407,10 +407,12 @@ async function main() {
     }
     await authenticationRefresh;
   };
-  const reportFailure = async (stage, previewId) => {
+  const reportFailure = async (stage, previewId, cause) => {
+    const code = typeof cause === "object" && cause && "code" in cause ? String(cause.code) : "";
+    const reason = code === "plan_limit_reached" ? code : void 0;
     try {
       await refreshAuthentication();
-      const send = () => fetch(`${baseURL}/api/v1/workflow/status`, { method: "POST", headers: { authorization: `Bearer ${auth.token}`, "content-type": "application/json" }, body: JSON.stringify({ phase: "failed", stage, previewId }) });
+      const send = () => fetch(`${baseURL}/api/v1/workflow/status`, { method: "POST", headers: { authorization: `Bearer ${auth.token}`, "content-type": "application/json" }, body: JSON.stringify({ phase: "failed", stage, previewId, reason }) });
       let response = await send();
       if (response.status === 401) {
         await refreshAuthentication(true);
@@ -496,7 +498,7 @@ async function main() {
     stopHeartbeat();
   } catch (error) {
     stopHeartbeat();
-    await reportFailure("publish", createdPreviewId);
+    await reportFailure("publish", createdPreviewId, error);
     throw error;
   }
 }
