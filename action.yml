@@ -34,7 +34,7 @@ inputs:
   api-url:
     description: Presto API origin.
     required: false
-    default: https://presto.digitalbunker.dev
+    default: https://usepresto.dev
 outputs:
   preview-id:
     description: Published preview identifier.

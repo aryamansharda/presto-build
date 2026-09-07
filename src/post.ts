@@ -13,7 +13,7 @@ export async function post() {
   const context = pullRequestContext(JSON.parse(await readFile(eventPath, 'utf8')));
   if (context.fromFork) return;
 
-  const baseURL = (input('api-url') || 'https://presto.digitalbunker.dev').replace(/\/$/, '');
+  const baseURL = (input('api-url') || 'https://usepresto.dev').replace(/\/$/, '');
   const scheme = input('scheme', true);
   const identity = await oidcToken('presto');
   const auth = await api<{ token: string; commitSha: string }>(`${baseURL}/api/v1/auth/github-actions`, {

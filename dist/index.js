@@ -383,7 +383,7 @@ async function main() {
   if (!checkoutVerified) {
     notice("::warning title=Presto could not verify the source commit::This job has no Git checkout. Presto assumes the app-path product came from the current pull request head.");
   }
-  const baseURL = (input("api-url") || "https://presto.digitalbunker.dev").replace(/\/$/, "");
+  const baseURL = (input("api-url") || "https://usepresto.dev").replace(/\/$/, "");
   const authenticate = async (phase) => {
     const identity = await oidcToken("presto");
     const result = await api(`${baseURL}/api/v1/auth/github-actions`, { method: "POST", body: JSON.stringify(actionAuthenticationPayload({ oidcToken: identity, pullRequest: context.number, expectedHeadSha: context.headSHA, phase, scheme })) });
